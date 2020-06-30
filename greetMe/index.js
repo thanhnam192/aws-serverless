@@ -9,7 +9,7 @@ const greetings = {
 
 exports.handler = async (event) => {
     const name = event.pathParameters.name;
-    let {lang,...info} = event.queryStringParameters;
+    let {lang,...info} = event.queryStringParameters || {};
 
     const greeting = greetings[lang] ? greetings[lang] : greetings['en'];
     const message = `${greeting} ${name}`;
@@ -20,8 +20,11 @@ exports.handler = async (event) => {
     };
 
     return {
-        'statusCode' : 200,
-        'body': JSON.stringify(response)
+        statusCode: 200,
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify(response)
     };
 
 }
